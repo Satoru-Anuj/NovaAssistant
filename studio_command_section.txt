@@ -1,0 +1,110 @@
+511:         else:
+512:             self.preview_playing = False
+513:             cap.release()
+514:             self.preview_cap = None
+515: 
+516:     def submit_command(self):
+517:         command = self.command_entry.get().strip().lower()
+518:         if not command:
+519:             return
+520: 
+521:         self.command_entry.delete(0, "end")
+522: 
+523:         if not self.video_path:
+524:             messagebox.showinfo(
+525:                 "Nova Studio", "Import a video first."
+526:             )
+527:             return
+528: 
+529:         path = str(self.video_path)
+530: 
+531:         try:
+532:             if "extract audio" in command:
+533:                 task = (editor.extract_audio, (path,))
+534:             elif "trim" in command:
+535:                 start = simpledialog.askfloat(
+536:                     "Trim", "Start time in seconds:", minvalue=0
+537:                 )
+538:                 if start is None:
+539:                     return
+540:                 end = simpledialog.askfloat(
+541:                     "Trim", "End time in seconds:", minvalue=0
+542:                 )
+543:                 if end is None or end <= start:
+544:                     messagebox.showwarning(
+545:                         "Trim", "End must be greater than start."
+546:                     )
+547:                     return
+548:                 task = (editor.trim_video, (path, start, end))
+549:             elif "speed" in command or "slow" in command:
+550:                 factor = simpledialog.askfloat(
+551:                     "Speed", "Speed factor (0.5 = slower, 2 = faster):",
+552:                     initialvalue=2.0 if "fast" in command else 0.5,
+553:                     minvalue=0.1, maxvalue=10,
+554:                 )
+555:                 if factor is None:
+556:                     return
+557:                 task = (editor.change_speed, (path, factor))
+558:             elif "crop" in command:
+559:                 w = simpledialog.askinteger(
+560:                     "Crop", "Width in pixels:", minvalue=2
+561:                 )
+562:                 if w is None:
+563:                     return
+564:                 h = simpledialog.askinteger(
+565:                     "Crop", "Height in pixels:", minvalue=2
+566:                 )
+567:                 if h is None:
+568:                     return
+569:                 task = (editor.crop_video, (path, w, h))
+570:             elif "resize" in command:
+571:                 w = simpledialog.askinteger(
+572:                     "Resize", "Width in pixels:", minvalue=2
+573:                 )
+574:                 if w is None:
+575:                     return
+576:                 h = simpledialog.askinteger(
+577:                     "Resize", "Height in pixels:", minvalue=2
+578:                 )
+579:                 if h is None:
+580:                     return
+581:                 task = (editor.resize_video, (path, w, h))
+582:             elif "bright" in command:
+583:                 amount = simpledialog.askfloat(
+584:                     "Brightness", "Adjustment from -1 to 1:",
+585:                     minvalue=-1, maxvalue=1,
+586:                 )
+587:                 if amount is None:
+588:                     return
+589:                 task = (editor.adjust_brightness, (path, amount))
+590:             elif "mute" in command:
+591:                 task = (editor.adjust_volume, (path, 0.0))
+592:             elif "volume" in command:
+593:                 amount = simpledialog.askfloat(
+594:                     "Volume", "Multiplier (1 = unchanged):",
+595:                     initialvalue=1.5, minvalue=0, maxvalue=10,
+596:                 )
+597:                 if amount is None:
+598:                     return
+599:                 task = (editor.adjust_volume, (path, amount))
+600:             elif "mp4" in command or "convert" in command:
+601:                 task = (editor.convert_to_mp4, (path,))
+602:             else:
+603:                 messagebox.showinfo(
+604:                     "Commands",
+605:                     "Try: trim, speed, crop, resize, brighten, "
+606:                     "extract audio, volume, mute, or convert to mp4.",
+607:                 )
+608:                 return
+609: 
+610:             function, args = task
+611:             threading.Thread(
+612:                 target=self.run_edit,
+613:                 args=(function, args),
+614:                 daemon=True,
+615:             ).start()
+616: 
+617:         except Exception as exc:
+618:             messagebox.showerror("Nova Studio", str(exc))
+619: 
+620:     def run_edit(self, function, args):

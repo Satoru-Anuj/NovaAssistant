@@ -1,0 +1,65 @@
+226: 
+227:     def build_tools_panel(self, parent):
+228:         panel = tk.Frame(parent, bg=PANEL)
+229:         panel.grid(row=0, column=2, sticky="nsew", padx=(6, 0))
+230: 
+231:         self.panel_title(panel, "Editing Tools")
+232: 
+233:         tools = [
+234:             ("âœ‚  Trim", "trim"),
+235:             ("â—·  Speed", "speed"),
+236:             ("â–£  Crop", "crop"),
+237:             ("â†”  Resize", "resize"),
+238:             ("â˜¼  Brightness", "brighten"),
+239:             ("â™«  Extract Audio", "extract audio"),
+240:             ("â—–  Volume", "volume"),
+241:             ("â‡©  Export MP4", "convert to mp4"),
+242:         ]
+243: 
+244:         for label, command in tools:
+245:             ttk.Button(
+246:                 panel,
+247:                 text=label,
+248:                 command=lambda c=command: self.tool_command(c),
+249:             ).pack(fill="x", padx=10, pady=4)
+250: 
+251:         tk.Label(
+252:             panel,
+253:             text="TOOLS APPLY TO\nTHE SELECTED VIDEO",
+254:             bg=PANEL,
+255:             fg=MUTED,
+256:             font=("Segoe UI", 8),
+257:             justify="center",
+258:         ).pack(pady=14)
+259: 
+260: 
+261:     def build_timeline(self):
+262:         panel = tk.Frame(self.root, bg=PANEL, height=190)
+263:         panel.pack(fill="x", padx=10, pady=(0, 8))
+264:         panel.pack_propagate(False)
+265: 
+266:         header = tk.Frame(panel, bg=PANEL)
+267:         header.pack(fill="x", padx=12, pady=(10, 6))
+268: 
+269:         tk.Label(
+270:             header, text="TIMELINE",
+271:             bg=PANEL, fg=ACCENT,
+272:             font=("Segoe UI", 10, "bold"),
+273:         ).pack(side="left")
+274: 
+275:         ttk.Button(
+276:             header, text="ï¼‹ Add Video Track",
+277:             command=lambda: self.add_log(
+278:                 "Video track selected."
+279:             ),
+280:         ).pack(side="right", padx=3)
+281: 
+282:         ttk.Button(
+283:             header, text="ï¼‹ Add Audio Track",
+284:             command=lambda: self.add_log(
+285:                 "Audio track selected."
+286:             ),
+287:         ).pack(side="right", padx=3)
+288: 
+289:         self.timeline_canvas = tk.Canvas(
+290:             panel,

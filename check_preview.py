@@ -1,0 +1,1 @@
+﻿from pathlib import Path; import re; s=Path('nova_studio.py').read_text(encoding='utf-8-sig'); print('Preview function found' if re.search(r'(?s)    def play_preview\(self\):.*?(?=    def submit_command\(self\):)',s) else 'Preview function not found')

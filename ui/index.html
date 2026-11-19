@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NOVA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="island" class="island" aria-label="Nova AI assistant">
+    <div class="edge-glow"></div>
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <section class="compact">
+      <div class="wordmark">NOVA <span class="live-dot"></span></div>
+      <div class="compact-status" id="compactStatus">SYSTEM ONLINE</div>
+    </section>
+    <section class="expanded-panel" id="expandedPanel">
+      <div class="eyebrow">PERSONAL INTELLIGENCE <span>///</span> ACTIVE</div>
+      <h1>N O V A</h1>
+      <p class="subline">NEURAL ORBITAL VOICE ASSISTANT</p>
+      <div class="status-line"><span class="status-dot"></span><span id="statusText">SYSTEM ONLINE</span><span class="status-right" id="meterLabel">AUDIO LINK READY</span></div>
+      <div class="meter" id="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="footer"><span>GROQ CORE</span><span>MEMORY LINK</span><button id="closeButton" title="Close Nova" aria-label="Close Nova">×</button></div>
+    </section>
+    <button class="mic-button" id="micButton" title="Enable live microphone visualizer" aria-label="Enable microphone visualizer"><span></span></button>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+﻿# Secrets
+.env
+.env.*
+!.env.example
+
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# AI models and personal voice data
+voice_model_cache/
+nova_voice_profile.pt
+
+# Backups
+*backup*/
+*backup*
+*.bak
+*.bak2
+*.backup
+*.candidate
+*.before-*
+
+# Logs and runtime data
+*.log
+nova_memory.json
+nova_status.txt
+nova_ui_state.txt
+nova_response.json
+nova_response.txt
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Additional backup naming patterns
+*before*
+*.bak*
+*.backup*
+*backup*
+*_pre_*
+*_pre-*
+*_rejected*
+*_working_copy*
+
+# Diagnostic files
+nova_studio_diagnostic.txt
+
+# Generated media exports
+Nova_Exports/
